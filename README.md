@@ -8,6 +8,15 @@ You will need:
 * A ssh client (putty, ssh) and connection to the internet
 * A github.com account - if you have none we will provide one
 
+The following clusters and ssh users have been created. Please substitute YOURCLUSTER below, with your chosen clauster. 
+
+alpha
+beta
+gamma
+delta
+epsilon
+zeta
+
 ## Initial checks
 
 ### SSH into jumphost
@@ -66,9 +75,9 @@ First we need to install JenkinsX. The jx executable is already installed on the
 jx install
 ```
 
-Select **kubernetes** and choose **Yes** to install a ingress controller in the kube-system namespace.
+Select **kubernetes**. Answer the question "No ingress controller found..." with **Yes** to install a ingress controller in the kube-system namespace.
 
-Choose Yes again to wait for jenkins for the new AWS load balancer to be created. This takes a few moments.
+Choose **Yes** again to wait for jenkins for the new AWS load balancer to be created. This takes a few moments.
 
 While we wait, we have to do a manual step in the AWS console. Currently jenkinsx is not able to create DNS entries in AWS Route53. So we have to add it. First copy the name of the loadbalancer that is shown (e.g. ac51aac...-34223...) then navigate to the AWS console in your browser.
 
@@ -78,17 +87,17 @@ https://649125951619.signin.aws.amazon.com/console
 * Choose Route53
 * Select hosted Zone **k8s.hackaburg.be.continental.cloud**
 * Choose **Create Record Set** 
-  * Enter as Name: **\*.YOURCLUSTER**
+  * Enter as Name: **\*.YOURCLUSTER** (e.g. *.alpha)
   * Select Alias **Yes** 
   * Paste the Loadbalancer name as the Alias Target. If the Loadbalancer is not listed you'll have to wait a few seconds. Try reloading the page if it is not showing
 
+No we can go back to your terminal session.
+
 For the domain please enter: **YOURCLUSTER.k8s.hackaburg.be.continental.cloud**
 
-No we can go back to our terminal session.
+Now enter a github username (you can use the provided account) because jenkins needs access to github. You'll have to create a token. Just follow the link provided by jx and paste the newly created token.
 
-Now jenkins needs access to your github account. Therefor you'll have to create a token. Just follow the link provided. You can delete the token after the workshop or just use the provided github account. 
-
-Jenkins will no launch all the necessary pods in kubernetes. You can check the creation in the kubernetes dashboard.
+Jenkins will now launch all the necessary pods in kubernetes. You can check the creation in the kubernetes dashboard.
 
 JenkinsX now needs a API Token from Jenkins. It will show you the Url and print the admin password. Log in to Jenkins and select **Show API Token** paste the Token.
 
@@ -102,7 +111,7 @@ Now let's create a simple spring demo application.
 jx create spring -d web -d actuator
 ```
 
-You will be asked to fill in your prefered language, Group and Artifact. **Please choose a unique name other than _demo_ as the artifact and repo name**
+You will be asked to fill in your prefered language, Group and Artifact. Just keep the default value. **Please choose a unique name other than _demo_ as the artifact and repo name**. Just use the provided default values for the rest of the questions.
 
 After everything is pushed, Jenkins will start its first build which you can follow by issuing
 
@@ -125,7 +134,7 @@ Let's change this and add a homepage.
 First we'll create a github issue for this...
 
 ```
-cd YOUR_PROJECT_DIR
+cd YOUR_PROJECT_NAME
 jx create issue -t 'add homepage'
 ```
 ...and do our work
@@ -146,7 +155,9 @@ hub pull-request
 
 Jenkins will now trigger a ci job for this pullrequest automatically. This will take some time, but jenkins will update the pull-request page on github automatically. Again you can see the build logs with the ```jx get build logs``` command.
 
-When the build is ready you will see a link to the staging environment inside the pull-request. If you open up the link, you'll see our new index.html.
+Switch to the github website and have a look at the pull request. When the build is ready you will see a link to the staging environment inside the pull-request. If you open up the link, you'll see our new index.html.
+
+Now it's time to close our pull request. Just hit the green button to merge the pull request.
 
 ### Bring you app into production
 
@@ -164,9 +175,13 @@ switch to the production env via
 jx env
 ```
 
-and choose **production**. After that you can use ```jx get apps``` to get the url to the production environment.
+and select **production**. We'll promote the version and bring it live.
 
-You should see our new homepage as well.
+```
+jx promote YOUR_PROJECT_NAME --env production --version 0.0.2
+```
+
+When the build is finished you should see with ```jx get apps`` that the application is now runnin in two environments staging and production. follow the production link from the terminal or find it as a comment on the github page and you should see our new homepage as well.
 
 Well done!
 
