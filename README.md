@@ -11,12 +11,13 @@ You will need:
 The following clusters and ssh users have been created. Please substitute YOURCLUSTER below, with your chosen cluster. 
 
 I created the following clusters for you
-*alpha
-*beta
-*gamma
-*delta
-*epsilon
-*zeta
+
+* alpha
+* beta
+* gamma
+* delta
+* epsilon
+* zeta
 
 ## Initial checks
 
