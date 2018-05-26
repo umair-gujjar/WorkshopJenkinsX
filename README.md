@@ -8,14 +8,15 @@ You will need:
 * A ssh client (putty, ssh) and connection to the internet
 * A github.com account - if you have none we will provide one
 
-The following clusters and ssh users have been created. Please substitute YOURCLUSTER below, with your chosen clauster. 
+The following clusters and ssh users have been created. Please substitute YOURCLUSTER below, with your chosen cluster. 
 
-alpha
-beta
-gamma
-delta
-epsilon
-zeta
+I created the following clusters for you
+*alpha
+*beta
+*gamma
+*delta
+*epsilon
+*zeta
 
 ## Initial checks
 
