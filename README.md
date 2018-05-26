@@ -183,7 +183,7 @@ and select **production**. We'll promote the version and bring it live.
 jx promote YOUR_PROJECT_NAME --env production --version 0.0.2
 ```
 
-When the build is finished you should see with ```jx get apps`` that the application is now runnin in two environments staging and production. follow the production link from the terminal or find it as a comment on the github page and you should see our new homepage as well.
+When the build is finished you should see with ```jx get apps``` that the application is now runnin in two environments staging and production. follow the production link from the terminal or find it as a comment on the github page and you should see our new homepage as well.
 
 Well done!
 
